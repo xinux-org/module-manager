@@ -3,6 +3,10 @@ name = "xinux-module-manager"
 version = "0.0.1"
 edition = "2021"
 default-run = "xinux-module-manager"
+authors = [
+  "Sokhibjon Orzikulov <sakhib@orzklv.uz>",
+  "Victor Fuentes <vlinkz@snowflakeos.org>",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

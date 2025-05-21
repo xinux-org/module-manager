@@ -41,8 +41,11 @@ impl SimpleComponent for AboutPageModel {
         let dialog = adw::AboutWindow::builder()
             .application_icon(config::APP_ID)
             .application_name("Xinux Module Manager")
-            .developer_name("Orzklv")
-            .developers(vec!["Orzklv https://github.com/orzklv"])
+            .developer_name("Xinux Developers")
+            .developers(vec![
+                "Orzklv https://github.com/orzklv",
+                "Victor Fuentes https://github.com/vlinkz",
+            ])
             .issue_url("https://github.com/xinux-org/module-manager/issues")
             .license_type(gtk::License::Gpl30)
             .modal(true)

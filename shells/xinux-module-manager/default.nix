@@ -1,0 +1,50 @@
+{
+  pkgs,
+  mkShell,
+  cargo,
+  clippy,
+  desktop-file-utils,
+  rust-analyzer,
+  rustc,
+  rustfmt,
+  cairo,
+  gdk-pixbuf,
+  gobject-introspection,
+  graphene,
+  gtk4,
+  libadwaita,
+  libxml2,
+  meson,
+  ninja,
+  openssl,
+  pkg-config,
+  polkit,
+  vte-gtk4,
+  wrapGAppsHook4,
+  ...
+}:
+mkShell {
+  buildInputs = with pkgs; [
+    cargo
+    clippy
+    desktop-file-utils
+    rust-analyzer
+    rustc
+    rustfmt
+    cairo
+    gdk-pixbuf
+    gobject-introspection
+    graphene
+    gtk4
+    libadwaita
+    libxml2
+    meson
+    ninja
+    openssl
+    pkg-config
+    polkit
+    vte-gtk4
+    wrapGAppsHook4
+  ];
+  RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+}

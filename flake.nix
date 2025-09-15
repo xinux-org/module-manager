@@ -1,49 +1,17 @@
 {
   inputs = {
     nixpkgs.url = "github:xinux-org/nixpkgs/nixos-unstable";
-    utils.url = "github:numtide/flake-utils";
+    xinux-lib = {
+      url = "github:xinux-org/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
-      in
-      rec
-      {
-        packages = let
-          xinux-module-manager = pkgs.callPackage ./default.nix {};
-        in {
-          inherit xinux-module-manager;
-          default = xinux-module-manager;
-        };
-
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            cargo
-            clippy
-            desktop-file-utils
-            rust-analyzer
-            rustc
-            rustfmt
-            cairo
-            gdk-pixbuf
-            gobject-introspection
-            graphene
-            gtk4
-            libadwaita
-            libxml2
-            meson
-            ninja
-            openssl
-            pkg-config
-            polkit
-            vte-gtk4
-            wrapGAppsHook4
-          ];
-          RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
-        };
-      });
+  outputs = inputs:
+    inputs.xinux-lib.mkFlake {
+      inherit inputs;
+      alias.packages.default = "xinux-module-manager";
+      alias.shells.default = "xinux-module-manager";
+      src = ./.;
+    };
 }

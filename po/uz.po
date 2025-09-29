@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 17:22+0500\n"
+"PO-Revision-Date: 2025-09-29 17:49+0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: src/ui/rebuild/rebuild_dialog.rs:94
+msgid "Rebuilding"
+msgstr "Qayta qurish"
+
+#: src/ui/rebuild/rebuild_dialog.rs:95
+msgid "Done!"
+msgstr "Bajarildi!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:96
+msgid "Error!"
+msgstr "Xatolik!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:102
+msgid "This may take a few minutes."
+msgstr "Bu bir necha daqiqa vaqt olishi mumkin."
+
+#: src/ui/rebuild/rebuild_dialog.rs:103
+msgid "All changes have applied!"
+msgstr "Barcha o‘zgarishlar tatbiq etildi!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:104
+msgid "Error encountered during rebuild process."
+msgstr "Qayta qurish jarayonida yuzaga kelgan xatolik."
+
+#: src/ui/rebuild/confirm_dialog.rs:42
+msgid "Apply changes?"
+msgstr "O‘zgarishlar tatbiq qilinsinmi?"
+
+#: src/ui/rebuild/confirm_dialog.rs:43
+msgid "The following changes will be applied. This may take some time."
+msgstr "Quyidagi o‘zgarishlar qo‘llaniladi. Bunga biroz vaqt ketishi mumkin."
+
+#: src/ui/module/page.rs:54
+msgid "Unknown"
+msgstr "Noma’lum"
+
+#: src/ui/module/page.rs:67 src/ui/window.rs:103
+msgid "Apply"
+msgstr "Qo‘llamoq"
+
+#: src/ui/window.rs:97
+msgid "Xinux Module Manager"
+msgstr "Xinux Modul Menejeri"

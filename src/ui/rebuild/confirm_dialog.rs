@@ -7,6 +7,7 @@ use crate::{
     },
 };
 use adw::{prelude::*, traits::MessageDialogExt};
+use gettextrs::gettext;
 use relm4::{factory::FactoryVecDeque, gtk, ComponentParts, ComponentSender, SimpleComponent};
 use std::collections::HashMap;
 
@@ -38,8 +39,8 @@ impl SimpleComponent for ConfirmDialogModel {
             #[watch]
             set_visible: model.visible,
             set_modal: true,
-            set_heading: Some("Apply changes?"),
-            set_body: "The following changes will be applied. This may take some time.",
+            set_heading: Some(&gettext("Apply changes?")),
+            set_body: &gettext("The following changes will be applied. This may take some time."),
             #[wrap(Some)]
             #[local_ref]
             set_extra_child = changes_factory_box -> gtk::Box {

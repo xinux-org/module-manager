@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 17:22+0500\n"
+"PO-Revision-Date: 2025-09-29 18:22+0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: src/ui/rebuild/rebuild_dialog.rs:94
+msgid "Rebuilding"
+msgstr "Перестройка"
+
+#: src/ui/rebuild/rebuild_dialog.rs:95
+msgid "Done!"
+msgstr "Готово!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:96
+msgid "Error!"
+msgstr "Ошибка!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:102
+msgid "This may take a few minutes."
+msgstr "Это может занять несколько минут."
+
+#: src/ui/rebuild/rebuild_dialog.rs:103
+msgid "All changes have applied!"
+msgstr "Все изменения применяются!"
+
+#: src/ui/rebuild/rebuild_dialog.rs:104
+msgid "Error encountered during rebuild process."
+msgstr "Ошибка, возникшая в процессе восстановления."
+
+#: src/ui/rebuild/confirm_dialog.rs:42
+msgid "Apply changes?"
+msgstr "Применить изменения?"
+
+#: src/ui/rebuild/confirm_dialog.rs:43
+msgid "The following changes will be applied. This may take some time."
+msgstr "Будут применяться следующие изменения. Это может занять некоторое время."
+
+#: src/ui/module/page.rs:54
+msgid "Unknown"
+msgstr "Неизвестный"
+
+#: src/ui/module/page.rs:67 src/ui/window.rs:103
+msgid "Apply"
+msgstr "Применить"
+
+#: src/ui/window.rs:97
+msgid "Xinux Module Manager"
+msgstr "Xinux Модульный Менеджер"

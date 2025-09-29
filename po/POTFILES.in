@@ -1,4 +1,5 @@
-data/org.xinux.NixSoftwareCenter.policy.in.in
-data/org.xinux.NixSoftwareCenter.desktop.in.in
-data/org.xinux.NixSoftwareCenter.metainfo.xml.in.in
-data/org.xinux.NixSoftwareCenter.metainfo.gschema.xml.in
+# Rust files
+src/ui/rebuild/rebuild_dialog.rs
+src/ui/rebuild/confirm_dialog.rs
+src/ui/module/page.rs
+src/ui/window.rs

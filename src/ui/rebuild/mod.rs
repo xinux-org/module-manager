@@ -1,7 +1,7 @@
 pub mod changes_factory;
 pub mod confirm_dialog;
 pub mod rebuild_dialog;
-
+pub mod utils;
 #[derive(Debug)]
 pub struct OptionModification {
     pub label: String,

@@ -1,6 +1,6 @@
+use crate::ui::rebuild::utils::gt_status_msg;
 use crate::{config::LIBEXECDIR, modules::ModuleOption, ui::window::AppInput};
 use adw::{gio, glib};
-use gettextrs::gettext;
 use log::{info, warn};
 use relm4::{
     gtk::{
@@ -90,19 +90,11 @@ impl SimpleComponent for RebuildModel {
                     gtk::Label {
                         add_css_class: "title-2",
                         #[track(model.changed(RebuildModel::status()))]
-                        set_text: match model.status {
-                            RebuildStatus::Building => &gettext("Rebuilding"),
-                            RebuildStatus::Success => &gettext("Done!"),
-                            RebuildStatus::Error => &gettext("Error!"),
-                        }
+                        set_text: gt_status_msg(model.status.clone())[0].as_str(),
                     },
                     gtk::Label {
                         #[track(model.changed(RebuildModel::status()))]
-                        set_text: match model.status {
-                            RebuildStatus::Building => &gettext("This may take a few minutes."),
-                            RebuildStatus::Success => &gettext("All changes have applied!"),
-                            RebuildStatus::Error => &gettext("Error encountered during rebuild process."),
-                        },
+                        set_text: gt_status_msg(model.status.clone())[1].as_str() ,
                     }
                 },
                 gtk::Frame {

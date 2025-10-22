@@ -1,3 +1,8 @@
+data/org.xinux.XinuxModuleManager.policy.in.in
+data/org.xinux.XinuxModuleManager.desktop.in.in
+data/org.xinux.XinuxModuleManager.metainfo.xml.in.in
+data/org.xinux.XinuxModuleManager.metainfo.gschema.xml.in
+
 # Rust files
 src/ui/rebuild/rebuild_dialog.rs
 src/ui/rebuild/confirm_dialog.rs

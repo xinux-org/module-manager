@@ -22,6 +22,7 @@ use crate::{
     },
 };
 use adw::{gtk, prelude::*};
+use gettextrs::gettext;
 use nix_data::config::configfile::NixDataConfig;
 use relm4::{
     actions::{RelmAction, RelmActionGroup},
@@ -93,13 +94,13 @@ impl SimpleComponent for AppModel {
                     adw::HeaderBar {
                         #[wrap(Some)]
                         set_title_widget = &gtk::Label {
-                            set_label: "Xinux Module Manager"
+                            set_label: &gettext("Xinux Module Manager")
                         },
                         pack_end = &gtk::Button {
                             #[watch]
                             set_visible: !model.modified_config.is_empty(),
                             add_css_class: "suggested-action",
-                            set_label: "Apply",
+                            set_label: &gettext("Apply"),
                             connect_clicked[sender] => move |_| {
                                 sender.input(AppInput::ApplyChanges)
                             }

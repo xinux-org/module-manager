@@ -1,12 +1,18 @@
 use std::collections::HashMap;
 
-use adw::prelude::{OrientableExt, WidgetExt, ButtonExt, BoxExt};
+use adw::prelude::{BoxExt, ButtonExt, OrientableExt, WidgetExt};
 use log::error;
-use relm4::{gtk, SimpleComponent, ComponentSender, ComponentParts, RelmWidgetExt, factory::FactoryVecDeque};
+use relm4::{
+    factory::FactoryVecDeque, gtk, ComponentParts, ComponentSender, RelmWidgetExt, SimpleComponent,
+};
 
-use crate::{modules::{ModuleData, ModuleOption}, ui::{window::AppInput, module::option_factory::ModuleOptionInit}};
+use crate::{
+    modules::{ModuleData, ModuleOption},
+    ui::{module::option_factory::ModuleOptionInit, window::AppInput},
+};
 
 use super::option_factory::ModuleOptionModel;
+use gettextrs::gettext;
 
 #[tracker::track]
 pub struct ModulePageModel {
@@ -18,11 +24,14 @@ pub struct ModulePageModel {
 
 #[derive(Debug)]
 pub enum ModulePageInput {
-    OpenModulePage(ModuleData, HashMap<String, ModuleOption>, HashMap<String, ModuleOption>),
+    OpenModulePage(
+        ModuleData,
+        HashMap<String, ModuleOption>,
+        HashMap<String, ModuleOption>,
+    ),
     SetModuleOption(String, ModuleOption),
     ShowApply(bool),
 }
-
 
 pub struct ModulePageInit {}
 
@@ -42,7 +51,7 @@ impl SimpleComponent for ModulePageModel {
                 #[wrap(Some)]
                 set_title_widget = &gtk::Label {
                     #[track(model.changed(ModulePageModel::data()))]
-                    set_label: model.data.as_ref().map(|data| data.name.as_str()).unwrap_or("Unknown"),
+                    set_label: model.data.as_ref().map(|data| data.name.as_str()).unwrap_or(&gettext("Unknown")),
                 },
                 pack_start = &gtk::Button {
                     add_css_class: "flat",
@@ -55,7 +64,7 @@ impl SimpleComponent for ModulePageModel {
                     #[track(model.changed(ModulePageModel::show_apply()))]
                     set_visible: model.show_apply,
                     add_css_class: "suggested-action",
-                    set_label: "Apply",
+                    set_label: &gettext("Apply"),
                     connect_clicked[sender] => move |_| {
                         if sender.output(AppInput::ApplyChanges).is_err() { error!("Error sender AppInput::Applychanges") }
                     }
@@ -100,7 +109,10 @@ impl SimpleComponent for ModulePageModel {
         root: &Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let optionfactory = FactoryVecDeque::new(gtk::Box::new(gtk::Orientation::Vertical, 0), sender.input_sender());
+        let optionfactory = FactoryVecDeque::new(
+            gtk::Box::new(gtk::Orientation::Vertical, 0),
+            sender.input_sender(),
+        );
         let model = ModulePageModel {
             data: None,
             optionfactory,
@@ -125,17 +137,17 @@ impl SimpleComponent for ModulePageModel {
                         let value = current_config.get(&option.id);
                         optionfactory_guard.push_back(ModuleOptionInit {
                             data: option,
-                            value: modified_value.cloned().or(value.cloned())
+                            value: modified_value.cloned().or(value.cloned()),
                         });
                     }
                 }
-            },
-            ModulePageInput::SetModuleOption(id, value) => {
-                if sender.output(AppInput::SetModuleOption(id, value)).is_err() { error!("Error sending: AppInput::SetModuleOption") }
-            },
-            ModulePageInput::ShowApply(show) => {
-                self.set_show_apply(show)
             }
+            ModulePageInput::SetModuleOption(id, value) => {
+                if sender.output(AppInput::SetModuleOption(id, value)).is_err() {
+                    error!("Error sending: AppInput::SetModuleOption")
+                }
+            }
+            ModulePageInput::ShowApply(show) => self.set_show_apply(show),
         }
     }
 }

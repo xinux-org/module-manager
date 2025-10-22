@@ -1,8 +1,6 @@
-use crate::{
-    modules::ModuleOption,
-    ui::window::AppInput, config::LIBEXECDIR,
-};
+use crate::{config::LIBEXECDIR, modules::ModuleOption, ui::window::AppInput};
 use adw::{gio, glib};
+use gettextrs::gettext;
 use log::{info, warn};
 use relm4::{
     gtk::{
@@ -71,7 +69,7 @@ impl SimpleComponent for RebuildModel {
                         RebuildStatus::Building => {
                             gtk::Spinner {
                                 set_spinning: true,
-                                set_height_request: 60,    
+                                set_height_request: 60,
                             }
                         },
                         RebuildStatus::Success => {
@@ -93,17 +91,17 @@ impl SimpleComponent for RebuildModel {
                         add_css_class: "title-2",
                         #[track(model.changed(RebuildModel::status()))]
                         set_text: match model.status {
-                            RebuildStatus::Building => "Rebuilding",
-                            RebuildStatus::Success => "Done!",
-                            RebuildStatus::Error => "Error!",
+                            RebuildStatus::Building => &gettext("Rebuilding"),
+                            RebuildStatus::Success => &gettext("Done!"),
+                            RebuildStatus::Error => &gettext("Error!"),
                         }
                     },
                     gtk::Label {
                         #[track(model.changed(RebuildModel::status()))]
                         set_text: match model.status {
-                            RebuildStatus::Building => "This may take a few minutes.",
-                            RebuildStatus::Success => "All changes have applied!",
-                            RebuildStatus::Error => "Error encountered during rebuild process."
+                            RebuildStatus::Building => &gettext("This may take a few minutes."),
+                            RebuildStatus::Success => &gettext("All changes have applied!"),
+                            RebuildStatus::Error => &gettext("Error encountered during rebuild process."),
                         },
                     }
                 },

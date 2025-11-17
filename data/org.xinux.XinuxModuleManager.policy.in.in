@@ -4,7 +4,7 @@
 <policyconfig>
     <vendor>Xinux</vendor>
     <vendor_url>https://xinux.uz</vendor_url>
-    <action id="org.xinux.XinuxModuleManager">
+    <action id="@app-id@">
         <description>Give Xinux Module Manager administrator access.</description>
         <message>Authentication is required to modify system modules.</message>
         <defaults>

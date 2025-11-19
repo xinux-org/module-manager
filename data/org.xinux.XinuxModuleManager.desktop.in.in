@@ -10,3 +10,4 @@ Keywords=Xinux;Nix;Nixos;nix;nixos;module;system;settings;config;configuration;
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 Icon=@icon@
 StartupNotify=true
+StartupWMClass=xinux-module-manager

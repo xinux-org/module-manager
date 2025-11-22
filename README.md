@@ -24,7 +24,43 @@ A simple Xinux module manager application built with [libadwaita](https://gitlab
 {
   inputs = {
     # other inputs
-    xinux-module-manager.url = "github:xinux-org/module-manager";
+    xinux-module-manager = {
+      url = "github:xinux-org/module-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-data = {
+      url = "github:xinux-org/nix-data";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  } @ inputs:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      # Nix script formatter
+    })
+    // {
+      # homeModules = import ./modules;
+
+      systems.modules.nixos = with inputs; [
+        nix-data.nixosModules.nix-data
+        xinux-modules.nixosModules.efiboot
+        xinux-modules.nixosModules.gnome
+        xinux-modules.nixosModules.kernel
+        xinux-modules.nixosModules.networking
+        xinux-modules.nixosModules.packagemanagers
+        xinux-modules.nixosModules.pipewire
+        xinux-modules.nixosModules.printing
+        xinux-modules.nixosModules.xinux
+        xinux-modules.nixosModules.metadata
+      ];
+    };
+}
     # rest of flake.nix
 ```
 
@@ -35,6 +71,14 @@ environment.systemPackages = with pkgs; [
     xinux-module-manager.packages.${system}.xinux-module-manager
     # rest of your packages
 ];
+
+programs.nix-data = {
+    enable = true;
+    systemconfig = "/home/bahrom/workplace/bahrom04/nix-config/hosts/matax/configuration.nix";
+    flake = "/home/bahrom/workplace/bahrom04/nix-config/flake.nix";
+    flakearg = "matax";
+};
+
 ```
 
 ## NixOS Installation

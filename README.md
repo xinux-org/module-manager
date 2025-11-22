@@ -18,6 +18,14 @@ A simple Xinux module manager application built with [libadwaita](https://gitlab
 
 ## NixOS Flakes Installation
 
+Copy ALL .yml files from xinux-org/modules into /etc/xinux-modules
+```
+├── /etc/xinux-modules
+│     ├── efiboot/module.yml
+│     └── xinux/module.yml
+|     # so on...
+```
+
 `flake.nix`
 
 ```nix

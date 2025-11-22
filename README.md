@@ -76,7 +76,7 @@ Copy ALL .yml files from xinux-org/modules into /etc/xinux-modules
 
 ```nix
 environment.systemPackages = with pkgs; [
-    xinux-module-manager.packages.${system}.xinux-module-manager
+    inputs.xinux-module-manager.packages.${system}.xinux-module-manager
     # rest of your packages
 ];
 

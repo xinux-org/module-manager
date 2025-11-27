@@ -116,6 +116,25 @@ with pkgs; [
 ];
 ```
 
+## You should be owner for your flake.nix or files
+
+```
+/home/user/.gitconfig
+
+[user]
+	email = toxtayevhamidulloh6997@gmail.com
+	name = rec
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[safe]
+	directory = *
+	directory = /home/letrec/Desktop/Xinux/module-manager
+	directory = /home/letrec/nix-conf/flake.nix
+```
+
 For any other method of installation, when rebuilding you will be prompted to authenticate twice in a row
 
 ## 'nix profile' installation

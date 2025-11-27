@@ -122,8 +122,8 @@ with pkgs; [
 /home/user/.gitconfig
 
 [user]
-	email = toxtayevhamidulloh6997@gmail.com
-	name = rec
+	email = email@gmail.com
+	name = user
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true

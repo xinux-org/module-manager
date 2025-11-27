@@ -117,9 +117,12 @@ with pkgs; [
 ```
 
 ## You should be owner for your flake.nix or files
-
+```bash
+sudo git config --global --add safe.directory /path/your/config
 ```
-/home/user/.gitconfig
+or
+```bash
+# /home/YOUR_USER/.gitconfig
 
 [user]
 	email = email@gmail.com

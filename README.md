@@ -4,6 +4,7 @@
 
 # Xinux Module Manager
 
+[![Telegram Group](https://img.shields.io/endpoint?color=neon&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fxinux/359410)](https://t.me/xinux/359410)
 [![Built with Nix][builtwithnix badge]][builtwithnix]
 [![License: GPLv3][GPLv3 badge]][GPLv3]
 [![Chat on Matrix][matrix badge]][matrix]

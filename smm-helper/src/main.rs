@@ -107,7 +107,7 @@ fn rebuild(args: Vec<String>, generations: Option<u32>) -> Result<()> {
                 .arg("--delete-generations")
                 .arg("-p")
                 .arg("/nix/var/nix/profiles/system")
-                .arg(&format!("+{}", g))
+                .arg(format!("+{}", g))
                 .spawn()?;
             let x = cmd.wait()?;
             if !x.success() {

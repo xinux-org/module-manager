@@ -1,7 +1,7 @@
 use crate::modules::{
     self,
     load::{getcurrentoptions, getmodulepath, loadmoduleconfig},
-    ModuleOption, Module,
+    Module, ModuleOption,
 };
 use anyhow::Result;
 use nix_data::config::configfile::NixDataConfig;
@@ -25,7 +25,7 @@ pub fn load() -> Result<LoadOutput> {
         .as_ref()
         .map(PathBuf::from)
         .expect("Failed to get flake path");
-    let modules = modules::load::loadmodules(&flakepath)?;
+    let modules = modules::load::loadmodules()?;
     let current_config =
         getcurrentoptions(&config, &modules).expect("Failed to load current module configuration");
     Ok(LoadOutput {
@@ -45,20 +45,13 @@ pub struct ReloadOutput {
 }
 
 pub fn reload(config: &NixDataConfig) -> Result<ReloadOutput> {
-    let flakepath = config
-        .flake
-        .as_ref()
-        .map(PathBuf::from)
-        .expect("Failed to get flake path");
-    let modules = modules::load::loadmodules(&flakepath)?;
-    let current_config = getcurrentoptions(config, &modules)
-        .expect("Failed to load current module configuration");
+    let modules = modules::load::loadmodules()?;
+    let current_config =
+        getcurrentoptions(config, &modules).expect("Failed to load current module configuration");
     let moduleconfig = loadmoduleconfig(config).expect("Failed to load module config");
-    Ok(
-        ReloadOutput {
-            current_config,
-            moduleconfig,
-            modules,
-        }
-    )
+    Ok(ReloadOutput {
+        current_config,
+        moduleconfig,
+        modules,
+    })
 }

@@ -11,16 +11,15 @@ use crate::modules::{ModuleData, OptionType};
 
 use super::{Module, ModuleOption};
 
-pub fn loadmodules(flakepath: &Path) -> Result<Vec<Module>> {
+pub fn loadmodules() -> Result<Vec<Module>> {
     // Iterate over all directories and subdirectories in the `basedir/modules` directory
     // and return a vector of `Module`s based on finding a `default.nix` file in the directory.
 
     let mut modules: Vec<Module> = Vec::new();
     let modulepath = Path::new("/etc/xinux-modules");
+    let modulelist = Path::new("/etc/xinux-modules/modules.json");
 
-    let flakefile = fs::read_to_string(flakepath)?;
-    let installed_modules =
-        nix_editor::read::getarrvals(&flakefile, "outputs.systems.modules.nixos")?;
+    let installed_modules = serde_json::from_str::<Vec<String>>(&fs::read_to_string(modulelist)?)?;
 
     for entry in walkdir::WalkDir::new(modulepath).into_iter().flatten() {
         let path = entry.path();
@@ -44,7 +43,7 @@ pub fn loadmodules(flakepath: &Path) -> Result<Vec<Module>> {
                     .and_then(|config_str| serde_yaml::from_str(&config_str).ok())
                 {
                     let config: Option<ModuleData> =
-                        moduleconfig.exists().then(|| config_text).flatten();
+                        moduleconfig.exists().then_some(config_text).flatten();
                     debug!("Loading config: {:#?}", config);
 
                     if let Some(config) = config {

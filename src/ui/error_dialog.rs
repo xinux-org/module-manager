@@ -1,5 +1,5 @@
-use relm4::{SimpleComponent, ComponentSender, ComponentParts};
-use adw::{prelude::*, gtk};
+use adw::{gtk, prelude::*};
+use relm4::{ComponentParts, ComponentSender, SimpleComponent};
 
 use super::window::AppInput;
 
@@ -13,7 +13,7 @@ pub struct ErrorDialogModel {
 #[derive(Debug)]
 pub enum ErrorDialogInput {
     Show(String, String),
-    Close
+    Close,
 }
 
 #[relm4::component(pub)]
@@ -54,15 +54,15 @@ impl SimpleComponent for ErrorDialogModel {
         };
         let widgets = view_output!();
         widgets
-        .dialog
-        .connect_response(None, move |_, resp| match resp {
-            "quit" => relm4::main_application().quit(),
-            "reset" => {
-                sender.input(ErrorDialogInput::Close);
-                let _ = sender.output(AppInput::Reload);
-            }
-            _ => unreachable!(),
-        });
+            .dialog
+            .connect_response(None, move |_, resp| match resp {
+                "quit" => relm4::main_application().quit(),
+                "reset" => {
+                    sender.input(ErrorDialogInput::Close);
+                    let _ = sender.output(AppInput::Reload);
+                }
+                _ => unreachable!(),
+            });
         ComponentParts { model, widgets }
     }
 
@@ -73,7 +73,7 @@ impl SimpleComponent for ErrorDialogModel {
                 self.set_visible(true);
                 self.set_title(title);
                 self.set_body(body);
-            },
+            }
             ErrorDialogInput::Close => self.set_visible(false),
         }
     }

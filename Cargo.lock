@@ -3851,6 +3851,7 @@ dependencies = [
  "relm4",
  "relm4-components",
  "serde",
+ "serde_json",
  "serde_yaml",
  "tracker",
  "vte4",

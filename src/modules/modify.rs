@@ -1,9 +1,9 @@
 use std::fs;
 
-use crate::{MODULES_CONFIG, modules::OptionType};
+use crate::{modules::OptionType, MODULES_CONFIG};
 
 use super::{Module, OptionData};
-use anyhow::{Result, Context};
+use anyhow::{Context, Result};
 
 fn write_module_option(opt: &str, value: &str) -> Result<()> {
     let moduleconfig = fs::read_to_string(MODULES_CONFIG)?;
@@ -20,7 +20,7 @@ fn deref_module_option(opt: &str) -> Result<()> {
 }
 
 impl Module {
-    pub fn setoption(&self, option: &OptionData, value: &str) -> Result<()>{
+    pub fn setoption(&self, option: &OptionData, value: &str) -> Result<()> {
         let config = &self.config;
         if !config.options.iter().any(|o| o.id == option.id) {
             anyhow::bail!("Option {} not found in module {}", option.id, self.name);
@@ -33,19 +33,19 @@ impl Module {
                 } else {
                     anyhow::bail!("Invalid value for switch option: {}", value);
                 }
-            },
+            }
             OptionType::Text { .. } => {
                 if value.starts_with('"') && value.ends_with('"') {
                     // Do nothing
                 } else {
                     anyhow::bail!("Invalid value for text option: {}", value);
                 }
-            },
+            }
             OptionType::Enum { options, .. } => {
                 if !options.values().any(|x| x == value) {
                     anyhow::bail!("Invalid value for enum option: {}", value);
                 }
-            },
+            }
             OptionType::NumberList { .. } => {
                 if value.starts_with('[') && value.ends_with(']') {
                     // Do nothing
@@ -54,7 +54,7 @@ impl Module {
                 }
             }
         }
-    
+
         write_module_option(&option.id, value)?;
 
         Ok(())
@@ -68,14 +68,16 @@ impl Module {
         deref_module_option(&option.id)?;
         Ok(())
     }
-    
 
     pub fn enable(&self, enable: bool) -> Result<()> {
         let config = &self.config;
         let options = &config.options;
-        let enableoption = options.iter().find(|option| option.id.split('.').last() == Some("enable")).context("No enable option found")?;
+        let enableoption = options
+            .iter()
+            .find(|option| option.id.split('.').next_back() == Some("enable"))
+            .context("No enable option found")?;
         write_module_option(&enableoption.id, &enable.to_string())?;
-        Ok(())  
+        Ok(())
     }
 
     pub fn remove(self) -> Result<()> {

@@ -1,4 +1,4 @@
-use std::{path::PathBuf, collections::HashMap};
+use std::{collections::HashMap, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -84,29 +84,30 @@ pub struct ConfigDetails {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ModuleOption {
-    Switch {
-        value: bool
-    },
-    Text {
-        value: String
-    },
-    Enum {
-        value: String,
-        pretty: String
-    },
-    NumberList {
-        value: Vec<u32>
-    }
+    Switch { value: bool },
+    Text { value: String },
+    Enum { value: String, pretty: String },
+    NumberList { value: Vec<u32> },
 }
 
 impl ModuleOption {
     #[allow(clippy::inherent_to_string)]
     pub fn to_string(&self) -> String {
         match self {
-            ModuleOption::Switch { value } => if *value { String::from("Enabled") } else { String::from("Disabled") },
+            ModuleOption::Switch { value } => {
+                if *value {
+                    String::from("Enabled")
+                } else {
+                    String::from("Disabled")
+                }
+            }
             ModuleOption::Text { value } => format!("\"{}\"", value),
             ModuleOption::Enum { pretty, .. } => pretty.to_string(),
-            ModuleOption::NumberList { value } => value.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", ")
+            ModuleOption::NumberList { value } => value
+                .iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<_>>()
+                .join(", "),
         }
     }
     pub fn value(&self) -> String {
@@ -114,7 +115,14 @@ impl ModuleOption {
             ModuleOption::Switch { value } => value.to_string(),
             ModuleOption::Text { value } => format!("\"{}\"", value),
             ModuleOption::Enum { value, .. } => value.to_string(),
-            ModuleOption::NumberList { value } => format!("[ {} ]", value.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))
+            ModuleOption::NumberList { value } => format!(
+                "[ {} ]",
+                value
+                    .iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            ),
         }
     }
 }

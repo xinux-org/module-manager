@@ -13,7 +13,6 @@ authors = [
 [dependencies]
 relm4 = { version = "0.6", features = ["libadwaita", "macros", "gnome_43"] }
 relm4-components = "0.6"
-# gtk = { package = "gtk4", version = "0.5", features = ["v4_6"] }
 adw = { package = "libadwaita", version = "0.4", features = ["v1_3"] }
 
 vte = { package = "vte4", version = "0.6" }

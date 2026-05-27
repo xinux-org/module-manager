@@ -11,15 +11,26 @@ use crate::modules::{ModuleData, OptionType};
 
 use super::{Module, ModuleOption};
 
-pub fn loadmodules() -> Result<Vec<Module>> {
+pub fn loadmodules(flakepath: &Path) -> Result<Vec<Module>> {
     // Iterate over all directories and subdirectories in the `basedir/modules` directory
     // and return a vector of `Module`s based on finding a `default.nix` file in the directory.
 
     let mut modules: Vec<Module> = Vec::new();
     let modulepath = Path::new("/etc/xinux-modules");
     let modulelist = Path::new("/etc/xinux-modules/modules.json");
-
-    let installed_modules = serde_json::from_str::<Vec<String>>(&fs::read_to_string(modulelist)?)?;
+    let flakefile = fs::read_to_string(flakepath)?;
+    let installed_modules = [
+        // Modules from flake.nix
+        nix_editor::read::getarrvals(&flakefile, "outputs.systems.modules.nixos")?
+            .iter()
+            .filter(|m| m.as_str() != "nix-data.nixosModules.nix-data")
+            .filter(|m| m.as_str() != "xinux-modules.nixosModules.meta")
+            .map(|i| i.to_owned())
+            .collect::<Vec<String>>(),
+        // Modules passed through upstream
+        serde_json::from_str::<Vec<String>>(&fs::read_to_string(modulelist)?)?,
+    ]
+    .concat();
 
     for entry in walkdir::WalkDir::new(modulepath).into_iter().flatten() {
         let path = entry.path();

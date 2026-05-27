@@ -178,6 +178,7 @@ impl SimpleComponent for RebuildModel {
                         .to_string();
                 }
                 output = nixpkgs_fmt::reformat_string(&output);
+
                 self.terminal.spawn_async(
                     vte::PtyFlags::DEFAULT,
                     Some("/"),
@@ -193,7 +194,11 @@ impl SimpleComponent for RebuildModel {
                         "--",
                         "switch",
                         "--flake",
-                        &self.flakepath.to_string_lossy(),
+                        &self
+                            .flakepath
+                            .parent()
+                            .unwrap_or(&self.flakepath)
+                            .to_string_lossy(),
                     ],
                     &[],
                     glib::SpawnFlags::DEFAULT,

@@ -4,11 +4,11 @@ use crate::modules::{
     Module, ModuleOption,
 };
 use anyhow::Result;
-use nix_data::config::configfile::NixDataConfig;
+use nix_data_xinux::config::configfile::NixDataConfig;
 use std::{collections::HashMap, path::PathBuf};
 
 pub struct LoadOutput {
-    pub config: nix_data::config::configfile::NixDataConfig,
+    pub config: nix_data_xinux::config::configfile::NixDataConfig,
     pub moduleconfig: String,
     pub modulepath: PathBuf,
     pub flakepath: PathBuf,
@@ -17,7 +17,7 @@ pub struct LoadOutput {
 }
 
 pub fn load() -> Result<LoadOutput> {
-    let config = nix_data::config::configfile::getconfig().expect("Failed to load config");
+    let config = nix_data_xinux::config::configfile::getconfig().expect("Failed to load config");
     let moduleconfig = loadmoduleconfig(&config).expect("Failed to load module config");
     let modulepath = getmodulepath(&config).expect("Failed to get module path");
     let flakepath = config

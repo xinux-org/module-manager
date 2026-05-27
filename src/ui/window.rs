@@ -23,7 +23,7 @@ use crate::{
 };
 use adw::{gtk, prelude::*};
 use gettextrs::gettext;
-use nix_data::config::configfile::NixDataConfig;
+use nix_data_xinux::config::configfile::NixDataConfig;
 use relm4::{
     actions::{RelmAction, RelmActionGroup},
     adw,

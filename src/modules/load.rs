@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use log::debug;
-use nix_data::config::configfile::NixDataConfig;
+use nix_data_xinux::config::configfile::NixDataConfig;
 use std::{
     collections::HashMap,
     fs,

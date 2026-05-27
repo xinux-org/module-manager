@@ -9,9 +9,6 @@ pkgs.stdenv.mkDerivation rec {
 
   cargoDeps = pkgs.rustPlatform.importCargoLock {
     lockFile = ../../Cargo.lock;
-    outputHashes = {
-      "nix-data-0.0.3" = "sha256-+xBbsCI7yYfgnwdDYmydzRlVuMnkFr/KK6xRK1szaLs=";
-    };
   };
 
   nativeBuildInputs = with pkgs; [

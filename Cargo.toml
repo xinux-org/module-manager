@@ -17,7 +17,7 @@ adw = { package = "libadwaita", version = "0.4", features = ["v1_3"] }
 
 vte = { package = "vte4", version = "0.6" }
 
-nix-data = { git = "https://git.oss.uzinfocom.uz/xinux/nix-data" }
+nix-data-xinux = "0.0.6"
 anyhow = "1.0"
 log = "0.4"
 pretty_env_logger = "0.5"

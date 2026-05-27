@@ -43,10 +43,10 @@ impl SimpleComponent for AboutPageModel {
             .application_name("Xinux Module Manager")
             .developer_name("Xinux Developers")
             .developers(vec![
-                "Orzklv https://github.com/orzklv",
+                "Orzklv https://git.floss.uz/orzklv",
                 "Victor Fuentes https://github.com/vlinkz",
             ])
-            .issue_url("https://github.com/xinux-org/module-manager/issues")
+            .issue_url("https://git.oss.uzinfocom.uz/xinux/module-manager/issues")
             .license_type(gtk::License::Gpl30)
             .modal(true)
             .transient_for(&dialog.parent_window)

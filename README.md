@@ -20,6 +20,7 @@ A simple Xinux module manager application built with [libadwaita](https://gitlab
 ## NixOS Flakes Installation
 
 Copy ALL .yml files from xinux-org/modules into /etc/xinux-modules
+
 ```
 ├── /etc/xinux-modules
 │     ├── efiboot/module.yml
@@ -118,10 +119,13 @@ with pkgs; [
 ```
 
 ## You should be owner for your flake.nix or files
+
 ```bash
 sudo git config --global --add safe.directory /path/your/config
 ```
+
 or
+
 ```bash
 # /home/YOUR_USER/.gitconfig
 
@@ -150,7 +154,7 @@ nix profile install github:xinux-org/module-manager
 ## 'nix-env' Installation
 
 ```bash
-git clone https://github.com/xinux-org/module-manager
+git clone https://git.oss.uzinfocom.uz/xinux/module-manager
 nix-env -f xinux-module-manager -i xinux-module-manager
 ```
 

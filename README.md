@@ -28,6 +28,26 @@ Copy ALL .yml files from xinux-org/modules into /etc/xinux-modules
 |     # so on...
 ```
 
+This application has Linux-only dependencies.
+```bash
+# download dependencies
+nix develop
+meson setup builddir --prefix=~/.local --reconfigure --buildtype=debug -Dprofile=development
+
+# Build and run
+meson install -C builddir
+# Avoid pkexec must be root error on devShell
+cd ..
+ ~/.local/bin/xinux-module-manager
+
+# Or one time build.
+nix build --show--trace
+
+# Optional. Generate translation words from /po/POTFILES.in if needed.
+cd ./po
+xgettext --directory=.. --files-from=POTFILES.in --from-code=UTF-8 -kgettext -o translations.pot
+```
+
 `flake.nix`
 
 ```nix

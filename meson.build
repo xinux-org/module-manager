@@ -1,8 +1,8 @@
 project(
   'xinux-module-manager',
   'rust',
-  version: '0.0.1',
-  meson_version: '>= 0.59',
+  version: '0.0.2',
+  meson_version: '>= 1.9',
   license: 'GPL-3.0',
 )
 
@@ -11,10 +11,11 @@ gnome = import('gnome')
 
 base_id = 'org.xinux.XinuxModuleManager'
 
-dependency('glib-2.0', version: '>= 2.76')
-dependency('gio-2.0', version: '>= 2.76')
-dependency('gtk4', version: '>= 4.10.0')
-dependency('libadwaita-1', version: '>=1.3.0')
+dependency('glib-2.0', version: '>= 2.66')
+dependency('gio-2.0', version: '>= 2.66')
+dependency('gtk4', version: '>= 4.6.0')
+dependency('libadwaita-1', version: '>=1.2.0')
+dependency('polkit-gobject-1', version: '>= 0.103')
 
 glib_compile_resources = find_program('glib-compile-resources', required: true)
 glib_compile_schemas = find_program('glib-compile-schemas', required: true)

@@ -3,7 +3,7 @@
 }:
 pkgs.stdenv.mkDerivation rec {
   pname = "xinux-module-manager";
-  version = "0.0.1";
+  version = "0.0.2";
 
   src = [../..];
 

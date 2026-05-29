@@ -7,8 +7,9 @@ pkgs.stdenv.mkDerivation rec {
 
   src = [../..];
 
-  cargoDeps = pkgs.rustPlatform.importCargoLock {
-    lockFile = ../../Cargo.lock;
+  cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+    inherit pname version src;
+    hash = "sha256-IMjRNAM3Tbgwqcrnn0WJ2jINq4WszbTxJX7Lgvz9jlc=";
   };
 
   nativeBuildInputs = with pkgs; [

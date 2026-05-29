@@ -1,10 +1,15 @@
-use super::{confirm_dialog::ConfirmDialogInput, ModificationType, OptionModification};
-use adw::traits::{ActionRowExt, PreferencesGroupExt, PreferencesRowExt};
+use std::convert::identity;
+
+use super::{ModificationType, OptionModification, confirm_dialog::ConfirmDialogInput};
 use relm4::{
+    FactorySender,
+    adw::{
+        self,
+        prelude::{ActionRowExt, PreferencesGroupExt, PreferencesRowExt},
+    },
     factory::{FactoryVecDeque, FactoryView},
     gtk,
     prelude::{DynamicIndex, FactoryComponent},
-    FactorySender,
 };
 
 pub struct ModuleChangesModel {
@@ -26,7 +31,6 @@ pub struct ModuleChangesInit {
 #[relm4::factory(pub)]
 impl FactoryComponent for ModuleChangesModel {
     type ParentWidget = gtk::Box;
-    type ParentInput = ConfirmDialogInput;
     type Input = ModuleChangesInput;
     type Output = ModuleChangesOutput;
     type Init = ModuleChangesInit;
@@ -42,9 +46,11 @@ impl FactoryComponent for ModuleChangesModel {
         }
     }
 
-    fn init_model(init: Self::Init, _index: &DynamicIndex, sender: FactorySender<Self>) -> Self {
-        let mut modificationfactory =
-            FactoryVecDeque::new(adw::PreferencesGroup::new(), sender.input_sender());
+    fn init_model(init: Self::Init, _index: &DynamicIndex, _sender: FactorySender<Self>) -> Self {
+        let mut modificationfactory = FactoryVecDeque::builder()
+            .launch(adw::PreferencesGroup::new())
+            .detach();
+
         let mut modificationfactory_guard = modificationfactory.guard();
         for change in init.modifications {
             modificationfactory_guard.push_back(OptionChangesInit {
@@ -61,7 +67,7 @@ impl FactoryComponent for ModuleChangesModel {
     fn init_widgets(
         &mut self,
         _index: &DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as FactoryView>::ReturnedWidget,
         _sender: FactorySender<Self>,
     ) -> Self::Widgets {
@@ -89,7 +95,6 @@ pub struct OptionChangesInit {
 #[relm4::factory(pub)]
 impl FactoryComponent for OptionChangesModel {
     type ParentWidget = adw::PreferencesGroup;
-    type ParentInput = ModuleChangesInput;
     type Input = OptionChangesInput;
     type Output = OptionChangesOutput;
     type Init = OptionChangesInit;
@@ -115,7 +120,7 @@ impl FactoryComponent for OptionChangesModel {
     fn init_widgets(
         &mut self,
         _index: &DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as FactoryView>::ReturnedWidget,
         _sender: FactorySender<Self>,
     ) -> Self::Widgets {

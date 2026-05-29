@@ -1,20 +1,20 @@
-use std::collections::HashMap;
-
-use adw::prelude::*;
 use log::debug;
 use relm4::{
+    FactorySender,
+    adw::{self, prelude::*},
     factory::{FactoryVecDeque, FactoryView},
     gtk,
     prelude::{DynamicIndex, FactoryComponent},
-    view, FactorySender,
+    view,
+};
+use std::collections::HashMap;
+
+use crate::{
+    modules::{ModuleOption, OptionData, OptionType},
+    ui::module::list_option_factory::ListOptionOutput,
 };
 
-use crate::modules::{ModuleOption, OptionData, OptionType};
-
-use super::{
-    list_option_factory::{ListOptionInit, ListOptionModel},
-    page::ModulePageInput,
-};
+use super::list_option_factory::{ListOptionInit, ListOptionModel};
 
 #[tracker::track]
 pub struct ModuleOptionModel {
@@ -54,11 +54,10 @@ pub struct ModuleOptionInit {
 
 #[relm4::factory(pub)]
 impl FactoryComponent for ModuleOptionModel {
-    type ParentWidget = gtk::Box;
-    type ParentInput = ModulePageInput;
+    type Init = ModuleOptionInit;
     type Input = ModuleOptionInput;
     type Output = ModuleOptionOutput;
-    type Init = ModuleOptionInit;
+    type ParentWidget = gtk::Box;
     type CommandOutput = ();
 
     view! {
@@ -72,8 +71,14 @@ impl FactoryComponent for ModuleOptionModel {
     }
 
     fn init_model(init: Self::Init, _index: &DynamicIndex, sender: FactorySender<Self>) -> Self {
-        let mut list_option_factory =
-            FactoryVecDeque::new(adw::ExpanderRow::new(), sender.input_sender());
+        let mut list_option_factory = FactoryVecDeque::builder()
+            .launch(adw::ExpanderRow::new())
+            .forward(sender.input_sender(), |output| match output {
+                ListOptionOutput::Remove(value, index) => {
+                    ModuleOptionInput::RemoveExpanderOption(value, index)
+                }
+            });
+
         if let OptionType::NumberList { default } = &init.data.op_type {
             let mut list_option_factory_guard = list_option_factory.guard();
             if let Some(ModuleOption::NumberList { value }) = &init.value {
@@ -107,7 +112,7 @@ impl FactoryComponent for ModuleOptionModel {
     fn init_widgets(
         &mut self,
         _index: &DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as FactoryView>::ReturnedWidget,
         sender: FactorySender<Self>,
     ) -> Self::Widgets {
@@ -135,7 +140,7 @@ impl FactoryComponent for ModuleOptionModel {
                             },
                             connect_state_set[sender, id = self.data.id.to_string()] => move |_, value| {
                                 sender.output(ModuleOptionOutput::SetOption(id.to_string(), ModuleOption::Switch { value }));
-                                gtk::Inhibit(false)
+                                gtk::glib::Propagation::Proceed
                             }
                         }
                     }
@@ -348,12 +353,5 @@ impl FactoryComponent for ModuleOptionModel {
                 }
             }
         }
-    }
-
-    fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
-        let output = match output {
-            ModuleOptionOutput::SetOption(id, value) => ModulePageInput::SetModuleOption(id, value),
-        };
-        Some(output)
     }
 }

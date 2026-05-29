@@ -1,7 +1,6 @@
 use crate::modules::{
-    self,
+    self, Module, ModuleOption,
     load::{getcurrentoptions, getmodulepath, loadmoduleconfig},
-    Module, ModuleOption,
 };
 use anyhow::Result;
 use nix_data_xinux::config::configfile::NixDataConfig;

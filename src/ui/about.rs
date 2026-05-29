@@ -27,7 +27,7 @@ impl SimpleComponent for AboutPageModel {
 
     fn init(
         parent_window: Self::Init,
-        _root: &Self::Root,
+        _root: Self::Root,
         _sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         let model = Self {};

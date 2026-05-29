@@ -1,6 +1,6 @@
 use super::{
     error_dialog::{ErrorDialogInput, ErrorDialogModel},
-    load::{reload, ReloadOutput},
+    load::{ReloadOutput, reload},
     module::page::{ModulePageInput, ModulePageModel},
     modulecard_factory::ModuleCardModel,
     rebuild::{
@@ -14,22 +14,21 @@ use crate::{
         about::AboutPageModel,
         load::LoadOutput,
         module::page::ModulePageInit,
-        modulecard_factory::ModuleCardInit,
+        modulecard_factory::{ModuleCardInit, ModuleCardOutput},
         rebuild::{
             confirm_dialog::{ConfirmDialogInit, ConfirmDialogInput},
             rebuild_dialog::RebuildInit,
         },
     },
 };
-use adw::{gtk, prelude::*};
 use gettextrs::gettext;
 use nix_data_xinux::config::configfile::NixDataConfig;
 use relm4::{
-    actions::{RelmAction, RelmActionGroup},
-    adw,
-    factory::FactoryVecDeque,
     Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmWidgetExt,
     SimpleComponent,
+    actions::{RelmAction, RelmActionGroup},
+    adw::{self, gtk, prelude::*},
+    factory::FactoryVecDeque,
 };
 use std::{collections::HashMap, convert::identity};
 
@@ -142,13 +141,14 @@ impl SimpleComponent for AppModel {
 
     fn init(
         init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let mut modulecardsfactory = FactoryVecDeque::new(
-            gtk::Box::new(gtk::Orientation::Vertical, 0),
-            sender.input_sender(),
-        );
+        let mut modulecardsfactory = FactoryVecDeque::builder()
+            .launch(gtk::Box::default())
+            .forward(sender.input_sender(), |output| match output {
+                ModuleCardOutput::Clicked(data) => AppInput::OpenModulePage(data),
+            });
 
         let LoadOutput {
             config,
@@ -171,11 +171,11 @@ impl SimpleComponent for AppModel {
             .launch(ModulePageInit {})
             .forward(sender.input_sender(), identity);
         let confirm_dialog = ConfirmDialogModel::builder()
-            .transient_for(root)
+            .transient_for(&root)
             .launch(ConfirmDialogInit { modules })
             .forward(sender.input_sender(), identity);
         let rebuild_dialog = RebuildModel::builder()
-            .transient_for(root)
+            .transient_for(&root)
             .launch(RebuildInit {
                 flakepath,
                 modulepath,
@@ -183,7 +183,7 @@ impl SimpleComponent for AppModel {
             })
             .forward(sender.input_sender(), identity);
         let error_dialog = ErrorDialogModel::builder()
-            .transient_for(root)
+            .transient_for(&root)
             .launch(())
             .forward(sender.input_sender(), identity);
         let aboutpage = AboutPageModel::builder()

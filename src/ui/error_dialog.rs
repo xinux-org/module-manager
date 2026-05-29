@@ -1,7 +1,8 @@
-use adw::{gtk, prelude::*};
-use relm4::{ComponentParts, ComponentSender, SimpleComponent};
-
 use super::window::AppInput;
+use relm4::{
+    ComponentParts, ComponentSender, SimpleComponent,
+    adw::{self, gtk, prelude::*},
+};
 
 #[tracker::track]
 pub struct ErrorDialogModel {
@@ -36,14 +37,14 @@ impl SimpleComponent for ErrorDialogModel {
             add_response: ("reset", "Reset"),
             add_response: ("quit", "Quit"),
             connect_close_request => |_| {
-                gtk::Inhibit(true)
+              gtk::glib::Propagation::Stop
             }
         }
     }
 
     fn init(
         _init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         let model = ErrorDialogModel {

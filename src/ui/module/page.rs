@@ -1,14 +1,21 @@
-use std::collections::HashMap;
-
-use adw::prelude::{BoxExt, ButtonExt, OrientableExt, WidgetExt};
 use log::error;
 use relm4::{
-    factory::FactoryVecDeque, gtk, ComponentParts, ComponentSender, RelmWidgetExt, SimpleComponent,
+    ComponentParts, ComponentSender, RelmWidgetExt, SimpleComponent,
+    adw::{
+        self,
+        prelude::{BoxExt, ButtonExt, OrientableExt, WidgetExt},
+    },
+    factory::FactoryVecDeque,
+    gtk,
 };
+use std::collections::HashMap;
 
 use crate::{
     modules::{ModuleData, ModuleOption},
-    ui::{module::option_factory::ModuleOptionInit, window::AppInput},
+    ui::{
+        module::option_factory::{ModuleOptionInit, ModuleOptionOutput},
+        window::AppInput,
+    },
 };
 
 use super::option_factory::ModuleOptionModel;
@@ -106,13 +113,17 @@ impl SimpleComponent for ModulePageModel {
 
     fn init(
         _init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let optionfactory = FactoryVecDeque::new(
-            gtk::Box::new(gtk::Orientation::Vertical, 0),
-            sender.input_sender(),
-        );
+        let optionfactory = FactoryVecDeque::builder()
+            .launch(gtk::Box::default())
+            .forward(sender.input_sender(), |output| match output {
+                ModuleOptionOutput::SetOption(id, value) => {
+                    ModulePageInput::SetModuleOption(id, value)
+                }
+            });
+
         let model = ModulePageModel {
             data: None,
             optionfactory,

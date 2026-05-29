@@ -1,14 +1,18 @@
-use super::{changes_factory::ModuleChangesModel, ModificationType};
+use super::{ModificationType, changes_factory::ModuleChangesModel};
 use crate::{
     modules::{Module, ModuleOption},
     ui::{
-        rebuild::{changes_factory::ModuleChangesInit, OptionModification},
+        rebuild::{OptionModification, changes_factory::ModuleChangesInit},
         window::AppInput,
     },
 };
-use adw::{prelude::*, traits::MessageDialogExt};
 use gettextrs::gettext;
-use relm4::{factory::FactoryVecDeque, gtk, ComponentParts, ComponentSender, SimpleComponent};
+use relm4::{
+    ComponentParts, ComponentSender, SimpleComponent,
+    adw::{self, prelude::MessageDialogExt, prelude::*},
+    factory::FactoryVecDeque,
+    gtk,
+};
 use std::collections::HashMap;
 
 pub struct ConfirmDialogModel {
@@ -51,18 +55,20 @@ impl SimpleComponent for ConfirmDialogModel {
             add_response: ("continue", "Continue"),
             set_response_appearance: ("continue", adw::ResponseAppearance::Suggested),
             connect_close_request => |_| {
-                gtk::Inhibit(true)
+                gtk::glib::Propagation::Stop
             }
         }
     }
 
     fn init(
         init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let changes_factory =
-            FactoryVecDeque::new(gtk::Box::builder().build(), sender.input_sender());
+        let changes_factory = FactoryVecDeque::builder()
+            .launch(gtk::Box::default())
+            .detach();
+
         let model = ConfirmDialogModel {
             modules: init.modules,
             visible: false,

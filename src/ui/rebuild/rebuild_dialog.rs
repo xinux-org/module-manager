@@ -1,13 +1,13 @@
 use crate::ui::rebuild::utils::gt_status_msg;
 use crate::{config::LIBEXECDIR, modules::ModuleOption, ui::window::AppInput};
-use adw::{gio, glib};
 use log::{info, warn};
 use relm4::{
+    ComponentParts, ComponentSender, SimpleComponent,
+    adw::{self, gio, glib},
     gtk::{
         self,
         prelude::{ButtonExt, GtkWindowExt, OrientableExt, WidgetExt},
     },
-    ComponentParts, ComponentSender, SimpleComponent,
 };
 use std::{collections::HashMap, path::PathBuf};
 use vte::{TerminalExt, TerminalExtManual};
@@ -148,7 +148,7 @@ impl SimpleComponent for RebuildModel {
 
     fn init(
         init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         let model = RebuildModel {

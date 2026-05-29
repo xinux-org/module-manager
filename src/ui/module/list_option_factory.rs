@@ -1,10 +1,9 @@
-use super::option_factory::ModuleOptionInput;
-use adw::prelude::*;
 use relm4::{
+    FactorySender,
+    adw::{self, prelude::*},
     factory::FactoryView,
     gtk,
     prelude::{DynamicIndex, FactoryComponent},
-    FactorySender,
 };
 
 pub struct ListOptionModel {
@@ -27,7 +26,6 @@ pub struct ListOptionInit {
 #[relm4::factory(pub)]
 impl FactoryComponent for ListOptionModel {
     type ParentWidget = adw::ExpanderRow;
-    type ParentInput = ModuleOptionInput;
     type Input = ListOptionInput;
     type Output = ListOptionOutput;
     type Init = ListOptionInit;
@@ -42,7 +40,7 @@ impl FactoryComponent for ListOptionModel {
                 set_valign: gtk::Align::Center,
                 set_icon_name: "user-trash-symbolic",
                 connect_clicked[sender, value = self.value.clone(), index = self.index.clone()] => move |_| {
-                    sender.output(ListOptionOutput::Remove(value.to_string(), index.clone()))
+                    sender.output(ListOptionOutput::Remove(value.to_string(), index.clone()));
                 }
             }
         }
@@ -58,7 +56,7 @@ impl FactoryComponent for ListOptionModel {
     fn init_widgets(
         &mut self,
         _index: &DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as FactoryView>::ReturnedWidget,
         sender: FactorySender<Self>,
     ) -> Self::Widgets {
@@ -68,14 +66,5 @@ impl FactoryComponent for ListOptionModel {
 
     fn update(&mut self, message: Self::Input, _sender: FactorySender<Self>) {
         match message {}
-    }
-
-    fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
-        let output = match output {
-            ListOptionOutput::Remove(value, index) => {
-                ModuleOptionInput::RemoveExpanderOption(value, index)
-            }
-        };
-        Some(output)
     }
 }

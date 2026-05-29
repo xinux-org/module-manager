@@ -1,12 +1,11 @@
-use super::window::AppInput;
 use crate::modules::{IconType, Module, ModuleData};
-use adw::prelude::{BoxExt, ButtonExt, OrientableExt, WidgetExt};
 use log::debug;
 use relm4::{
+    FactorySender, RelmWidgetExt,
+    adw::prelude::{BoxExt, ButtonExt, OrientableExt, WidgetExt},
     factory::FactoryView,
     gtk,
     prelude::{DynamicIndex, FactoryComponent},
-    FactorySender, RelmWidgetExt,
 };
 
 pub struct ModuleCardModel {
@@ -28,7 +27,6 @@ pub struct ModuleCardInit {
 #[relm4::factory(pub)]
 impl FactoryComponent for ModuleCardModel {
     type ParentWidget = gtk::Box;
-    type ParentInput = AppInput;
     type Input = ModuleCardInput;
     type Output = ModuleCardOutput;
     type Init = ModuleCardInit;
@@ -39,7 +37,7 @@ impl FactoryComponent for ModuleCardModel {
         gtk::Button {
             add_css_class: "card",
             connect_clicked[sender, data = self.module.config.clone()] => move |_| {
-                sender.output(ModuleCardOutput::Clicked(data.clone()))
+                sender.output(ModuleCardOutput::Clicked(data.clone()));
             },
             gtk::Box {
                 set_orientation: gtk::Orientation::Horizontal,
@@ -82,7 +80,7 @@ impl FactoryComponent for ModuleCardModel {
     fn init_widgets(
         &mut self,
         _index: &DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as FactoryView>::ReturnedWidget,
         sender: FactorySender<Self>,
     ) -> Self::Widgets {
@@ -95,7 +93,7 @@ impl FactoryComponent for ModuleCardModel {
                         self.module.path.to_string_lossy(),
                         icondata.path
                     );
-                    widgets.image.set_file(Some(
+                    widgets.image.set_tooltip_text(Some(
                         format!("{}/{}", self.module.path.to_string_lossy(), icondata.path)
                             .as_str(),
                     ));
@@ -114,12 +112,5 @@ impl FactoryComponent for ModuleCardModel {
 
     fn update(&mut self, message: Self::Input, _sender: FactorySender<Self>) {
         match message {}
-    }
-
-    fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
-        let output = match output {
-            ModuleCardOutput::Clicked(data) => AppInput::OpenModulePage(data),
-        };
-        Some(output)
     }
 }

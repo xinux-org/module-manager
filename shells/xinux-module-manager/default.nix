@@ -1,5 +1,7 @@
 {
   pkgs,
+  inputs,
+  system,
   mkShell,
   cargo,
   clippy,
@@ -23,6 +25,18 @@
   wrapGAppsHook4,
   ...
 }:
+let
+  treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+    projectRootFile = "flake.nix";
+    programs.nixfmt.enable = true;
+    programs.rustfmt.enable = true;
+  };
+  preCommitCheck = inputs.git-hooks.lib."${system}".run {
+    src = ./.;
+    hooks.treefmt.enable = true;
+    hooks.treefmt.package = treefmtEval.config.build.wrapper;
+  };
+in
 mkShell {
   buildInputs = with pkgs; [
     cargo
@@ -47,6 +61,7 @@ mkShell {
     wrapGAppsHook4
   ];
 
-  RUST_BACKTRACE=1;
+  RUST_BACKTRACE = 1;
   RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+  shellHook = preCommitCheck.shellHook;
 }

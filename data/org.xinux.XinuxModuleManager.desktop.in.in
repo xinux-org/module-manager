@@ -11,3 +11,4 @@ Keywords=Xinux;Nix;Nixos;nix;nixos;module;system;settings;config;configuration;
 Icon=@icon@
 StartupNotify=true
 StartupWMClass=xinux-module-manager
+SingleMainWindow=true

@@ -27,7 +27,7 @@ fn main() {
 
     let app = adw::Application::new(Some(config::APP_ID), gio::ApplicationFlags::empty());
     app.set_resource_base_path(Some("/org/xinux/XinuxModuleManager"));
-    let app = RelmApp::new("org.xinux.XinuxModuleManager");
+    let app = RelmApp::from_app(app);
 
     match load() {
         Ok(load) => app.run::<AppModel>(AppInit { load }),

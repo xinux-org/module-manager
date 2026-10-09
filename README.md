@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="data/icons/org.xinux.XinuxModuleManager.svg"/>
+<img src="data/icons/uz.xinux.XinuxModuleManager.svg"/>
 
 # Xinux Module Manager
 

@@ -39,5 +39,6 @@ pkgs.stdenv.mkDerivation rec {
     wayland
     adwaita-icon-theme
     desktop-file-utils
+    sqlite
   ];
 }
